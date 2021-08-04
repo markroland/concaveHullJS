@@ -1,0 +1,29 @@
+{
+  "name": "@markroland/concave-hull",
+  "version": "1.0.0",
+  "description": "Calculate a Concave Hull from a set of points in 2D space",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markroland/concaveHullJS.git"
+  },
+  "keywords": [
+    "Concave",
+    "Hull",
+    "Concave",
+    "Hull"
+  ],
+  "author": "Mark Roland",
+  "license": "SEE LICENSE IN README.md",
+  "bugs": {
+    "url": "https://github.com/markroland/concaveHullJS/issues"
+  },
+  "homepage": "https://github.com/markroland/concaveHullJS#readme",
+  "dependencies": {
+    "csv-parse": "^4.16.0",
+    "csv-stringify": "^5.6.2"
+  }
+}

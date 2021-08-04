@@ -21,31 +21,7 @@ In an effort to create an all-in-one library, I have used code available in publ
 from other developers. Links are provided where this code appears and I have made an effort to
 isolate these functions and modify them as little as possible.
 
-## Usage
-
-Include the script in the HTML:
-
-```
-<script src="concaveHull.min.js"></script>
-```
-
-Call the `calculate` function on a set of points:
-
-```
-// Create random points
-let points = new Array();
-for (let i = 0; i < 60; i++) {
-  points.push([Math.random(), Math.random()])
-}
-
-// Define your k value
-const k = 3;
-
-// Call the calculate() function
-let hull = concaveHull.calculate(points, k);
-```
-
-### Example
+## Example
 
 Input:
 
@@ -90,6 +66,71 @@ Output with a "k" value of 3:
     [-0.1, 0.7],
     [ 0.2, 0.8]
 ]
+```
+
+## Browser Usage
+
+Include the script in the HTML:
+
+```
+<script src="concaveHull.min.js"></script>
+```
+
+Call the `calculate` function on a set of points:
+
+```
+// Create random points
+let points = new Array();
+for (let i = 0; i < 60; i++) {
+  points.push([Math.random(), Math.random()])
+}
+
+// Define your k value
+const k = 3;
+
+// Call the calculate() function
+let hull = concaveHull.calculate(points, k);
+```
+
+## Command Line Usage
+
+NOTE: This is my first NPM package so I'm not sure if all of this is correct!
+
+```
+npm install @markroland/concave-hull
+```
+
+```
+node index.js
+```
+
+## Node Project Usage
+
+```
+const ch = require('./src/concaveHull.js')
+
+let points = [
+  [-0.2, -0.8],
+  [ 0.1, -0.8],
+  [ 0.5, -0.7],
+  [ 0.6, -0.6],
+  [-0.5, -0.5],
+  [ 0.3, -0.4],
+  [-0.6, -0.2],
+  [-0.35, -0.18],
+  [0.05, -0.2],
+  [-0.1, 0.1],
+  [-0.6, 0.2],
+  [0.05, 0.4],
+  [-0.5, 0.5],
+  [ 0.5, 0.55],
+  [-0.1, 0.7],
+  [ 0.2, 0.8]
+];
+
+let calculated_hull = ch.concaveHull.calculate(points, 3)
+
+console.log(calculated_hull)
 ```
 
 ## License

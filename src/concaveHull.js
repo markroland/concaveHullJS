@@ -549,3 +549,8 @@ var concaveHull = function() {
     calculate: calculate
   }
 }();
+
+// NodeJS CLI Support
+if (typeof exports === "object") {
+  module.exports = { concaveHull };
+}
