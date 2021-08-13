@@ -101,7 +101,9 @@ npm install @markroland/concave-hull
 ```
 
 ```
-node index.js
+node index.js [input filepath] 
+```
+
 ```
 
 ## Node Project Usage
