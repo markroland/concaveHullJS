@@ -104,6 +104,16 @@ npm install @markroland/concave-hull
 node index.js [input filepath] 
 ```
 
+Run as `concave-hull`. Running `chmod +x` and `npm link` may be required for this.
+
+```
+concave-hull [input filepath] 
+```
+
+Optional: Specify an output filepath
+
+```
+concave-hull [input filepath] [output filepath] 
 ```
 
 ## Node Project Usage
