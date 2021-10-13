@@ -1,10 +1,10 @@
 {
   "name": "@markroland/concave-hull",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Calculate a Concave Hull from a set of points in 2D space",
   "main": "index.js",
-  "bin" : {
-      "concave-hull" : "./index.js"
+  "bin": {
+    "concave-hull": "./index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
