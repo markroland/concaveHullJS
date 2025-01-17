@@ -1,6 +1,6 @@
 {
   "name": "@markroland/concave-hull",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Calculate a Concave Hull from a set of points in 2D space",
   "main": "index.js",
   "bin": {
@@ -15,8 +15,6 @@
   },
   "keywords": [
     "Concave",
-    "Hull",
-    "Concave",
     "Hull"
   ],
   "author": "Mark Roland",
@@ -29,5 +27,9 @@
     "csv-parse": "^4.16.0",
     "csv-stringify": "^5.6.2",
     "yargs": "^17.1.0"
+  },
+  "engines": {
+    "node": ">=22.x",
+    "npm": ">=10.x"
   }
 }
