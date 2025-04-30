@@ -1,8 +1,7 @@
 {
   "name": "@markroland/concave-hull",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Calculate a Concave Hull from a set of points in 2D space",
-  "type": "module",
   "main": "./dist/concaveHull.cjs.js",
   "module": "./dist/concaveHull.esm.js",
   "exports": {
