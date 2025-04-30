@@ -1,6 +1,6 @@
 {
   "name": "@markroland/concave-hull",
-  "version": "1.1.1",
+  "version": "1.2.1",
   "description": "Calculate a Concave Hull from a set of points in 2D space",
   "type": "module",
   "main": "./dist/concaveHull.cjs.js",
@@ -26,6 +26,7 @@
     "Hull"
   ],
   "files": [
+    "src/cli.js",
     "dist",
     "README.md"
   ],

@@ -14,7 +14,7 @@ node main.mjs sample.csv
 // Import modules
 import fs from 'fs';
 import { parse } from 'csv-parse';
-import concaveHull from './concaveHull.js';
+import concaveHull from '../dist/concaveHull.esm.js';
 import { stringify } from 'csv-stringify';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
