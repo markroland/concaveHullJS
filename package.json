@@ -10,7 +10,7 @@
     "import": "./dist/concaveHull.esm.js"
   },
   "bin": {
-    "concave-hull": "./src/cli.js"
+    "concave-hull": "src/cli.js"
   },
   "scripts": {
     "build": "rollup -c",
