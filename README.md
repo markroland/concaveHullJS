@@ -68,6 +68,84 @@ Output with a "k" value of 3:
 ]
 ```
 
+## Browser Usage
+
+Include the script in your HTML. Consider hosting `concaveHull.browser.js` on your own service.
+
+```
+<script src="https://cdn.jsdelivr.net/npm/@markroland/concave-hull@1.2.1/dist/concaveHull.browser.js"></script>
+<script>
+
+  // Create random points
+  let points = []
+  for (let i = 0; i < 60; i++) {
+    points.push([Math.random(), Math.random()])
+  }
+
+  const hullModule = concaveHull();
+  let calculated_hull = hullModule.calculate(points, 3)
+  console.log(calculated_hull)
+</script>
+```
+
+or if you prefer using ES Modules:
+
+```
+<script type="importmap">
+  {
+    "imports": {
+      "@markroland/concave-hull": "https://cdn.jsdelivr.net/npm/@markroland/concave-hull@1.2.1/dist/concaveHull.esm.js"
+    }
+  }
+</script>
+<script type="module">
+  import concaveHull from '@markroland/concave-hull';
+
+  // Create random points
+  let points = []
+  for (let i = 0; i < 60; i++) {
+    points.push([Math.random(), Math.random()])
+  }
+
+  const hullModule = concaveHull();
+  let calculated_hull = hullModule.calculate(points, 3)
+  console.log(calculated_hull)
+</script>
+```
+
+## Command Line Usage
+
+This can be used from the command line. You may pass in a CSV file formatted as:
+
+```
+-0.2,-0.8
+0.1,-0.8
+0.5,-0.7
+0.6,-0.6
+-0.5,-0.5
+0.3,-0.4
+-0.6,-0.2
+-0.35,-0.18
+0.05,-0.2
+-0.1,0.1
+```
+
+The results will be printed to the command line, or if a second optional filepath
+parameter is provided, it will write to that file.
+
+**Install Globally**
+
+```
+npm install -g @markroland/concave-hull
+concave-hull [input filepath] ([output filepath])
+```
+
+**Run using `npx`**
+
+```
+npx @markroland/concave-hull [input filepath] ([output filepath])
+```
+
 ## Node Project Usage
 
 ```
@@ -110,6 +188,19 @@ console.log(calculated_hull)
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.2.2] - 2025-04-30
+
+### Fixed
+
+- Fixed `bin` and `npx` usage
+- Updated README.md to represent currently supported usage.
+
+## [1.2.1] - 2025-04-30
+
+### Fixed
+
+- Fixed `bin` and `npx` usage
 
 ## [1.2.0] - 2025-04-30
 

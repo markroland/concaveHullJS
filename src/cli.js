@@ -40,11 +40,9 @@ if (argv.file) {
 }
 
 // Output filepath
-let output_filepath;
+let output_filepath = '';
 if (argv._[1]) {
   output_filepath = argv._[1];
-} else {
-  output_filepath = path.join(__dirname, 'sample-out.csv');
 }
 
 // Parse callback
@@ -58,20 +56,22 @@ const parser = parse({ cast: true }, function (err, points) {
   const calculated_hull = hullModule.calculate(points, 3);
   console.log(calculated_hull);
 
-  stringify(calculated_hull, { header: false }, function (err, output) {
-    if (err) {
-      console.error('Error stringifying CSV:', err);
-      process.exit(1);
-    }
-
-    fs.writeFile(output_filepath, output, (err) => {
+  if (output_filepath) {
+    stringify(calculated_hull, { header: false }, function (err, output) {
       if (err) {
-        console.error('Error writing file:', err);
+        console.error('Error stringifying CSV:', err);
         process.exit(1);
       }
-      console.log('The calculated hull has been saved to ' + output_filepath);
+
+      fs.writeFile(output_filepath, output, (err) => {
+        if (err) {
+          console.error('Error writing file:', err);
+          process.exit(1);
+        }
+        console.log('The calculated hull has been saved to ' + output_filepath);
+      });
     });
-  });
+  }
 });
 
 // Read CSV file
