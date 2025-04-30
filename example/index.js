@@ -1,4 +1,15 @@
 #!/usr/bin/env node
+/*
+
+Installation:
+
+npm install csv-parse@5.6.0 csv-stringify@6.5.2 yargs@17.7.2
+
+Usage:
+
+node ./example/index.js ./example/sample.csv
+
+*/
 
 // Parse input
 const yargs = require('yargs/yargs')
@@ -6,10 +17,10 @@ const { hideBin } = require('yargs/helpers')
 const argv = yargs(hideBin(process.argv)).argv
 
 // Requirements
-var fs = require('fs');
-var parse = require('csv-parse');
-const ch = require('./src/concaveHull.js')
-var stringify = require('csv-stringify');
+const fs = require('fs');
+const { parse } = require('csv-parse');
+const concaveHull = require('@markroland/concave-hull')
+const { stringify } = require('csv-stringify');
 
 // Input filepath
 let input_filepath = null
@@ -32,7 +43,9 @@ if (argv._[1]) {
 
 // Parse callback
 var parser = parse({cast: true}, function (err, points) {
-  let calculated_hull = ch.concaveHull.calculate(points, 3)
+
+  const hullModule = concaveHull();
+  let calculated_hull = hullModule.calculate(points, 3)
   console.log(calculated_hull)
 
   stringify(calculated_hull, {

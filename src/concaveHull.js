@@ -17,7 +17,7 @@
  * isolate these functions and modify them as little as possible.
  *
  */
-var concaveHull = function() {
+const concaveHull = function(verbose = false) {
 
   // ---
   // The Moreira and Santos Algorithm
@@ -68,6 +68,8 @@ var concaveHull = function() {
     let currentPoint = firstPoint;
     dataset = RemovePoint(dataset, firstPoint);
 
+    if (verbose) { console.log("-----"); }
+
     // Initialize previous angle
     // This deviatess from the algorithm. In this coordinate system the zero
     // angle described in the algorithm is in the negative X direction,
@@ -82,17 +84,41 @@ var concaveHull = function() {
 
     while ((!pointEquals(currentPoint, firstPoint) || step == 2) && dataset.length > 0) {
 
+      if (verbose) { console.log("Step: " + step); }
+
       // See note above about "stop"
       if (step == stop) {
         // Add the firstPoint again
         dataset = AddPoint(dataset, firstPoint);
       }
 
+      // Debug exit
+      // if (step > 2) { return hull; }
+
       // Find the nearest neighbors
       let kNearestPoints = NearestPoints(dataset, currentPoint, kk);
 
+      // Debugging
+      if (verbose) {
+        let debug_string = "Nearest Points to " + getIndex(pointsList, currentPoint) + ": ";
+        for (let p of kNearestPoints) {
+          debug_string += getIndex(pointsList, p) + ", ";
+        }
+        console.log(debug_string.replace(/,\s*$/, ""));
+      }
+
       // Sort the candidates (neighbours) in descending order of right-hand turn
-      let cPoints = SortByAngle(kNearestPoints, currentPoint, previousAngle);
+      let cPoints = SortByAngle(kNearestPoints, currentPoint, previousAngle, pointsList);
+
+      let debug_string = "Sorted Candidate Points from " + getIndex(pointsList, currentPoint) + ": ";
+      // for (let cp of cPoints) {
+      for (let i = 0; i < cPoints.length; i++) {
+        let cp = cPoints[i];
+        debug_string += getIndex(pointsList, cp) + ", ";
+      }
+      if (verbose) {
+        console.log(debug_string.replace(/,\s*$/, ""));
+      }
 
       // Select the first candidate that does not intersect any of the "hull" polygon edges
       // The algorithm's "its" variable name has been replaced with "intersects"
@@ -104,10 +130,15 @@ var concaveHull = function() {
         i++;
 
         let lastPoint;
+        // console.log(cPoints.length, i, cPoints[i], firstPoint);
         if (pointEquals(cPoints[i-1], firstPoint)) {
           lastPoint = 1;
         } else {
           lastPoint = 0;
+        }
+
+        if (verbose) {
+          console.log("lastPoint: " + lastPoint);
         }
 
         // Only evaluate if the hull is 3 or more points
@@ -115,18 +146,38 @@ var concaveHull = function() {
         intersects = false;
         while (intersects === false && j < (hull.length - lastPoint)) {
 
+          if (verbose) {
+            console.log("j " + j + " of " + (hull.length - lastPoint - 1));
+            // console.log("Step: " + step, "i: " + i, hull, cPoints)
+            // console.log([hull[step-2], cPoints[i]])
+            console.log("cPoints: ", cPoints);
+
+            console.log(
+              "Evaluating intersection of line " +
+              getIndex(pointsList, hull[step-2]) + "->" + getIndex(pointsList, cPoints[i-1]) +
+              " and line " + getIndex(pointsList, hull[step-2-j]) + "->" + getIndex(pointsList, hull[step-1-j])
+            );
+          }
+
           // Note: The index values here are reduced by one compared to the algorithm
           intersects = IntersectsQ(
             [hull[step-2], cPoints[i-1]],
             [hull[step-2-j], hull[step-1-j]]
           );
+          if (verbose) { console.log("intersects: " + intersects); }
+
+          // Debug breakpoint
+          // if (step > 5) { return hull; }
 
           j++;
         }
+
+        // if (verbose) { console.log("-----") }
       }
 
       // since all candidates intersect at least one edge, try again with a higher number of neighbours
       if (intersects === true) {
+        if (verbose) { console.log("Recalculating with k=" + (kk+1)); }
         return calculate(pointsList, kk+1);
       }
 
@@ -138,10 +189,18 @@ var concaveHull = function() {
 
       // Again, step index altered by -1
       previousAngle = Angle(hull[step-2], hull[step-1]);
+      if (verbose) {
+        console.log("hull: ", hull);
+        console.log("previousAngle: ", (previousAngle * (180/Math.PI)).toFixed(2));
+      }
+
+      // console.log("hull 2", hull, previousAngle)
 
       dataset = RemovePoint(dataset, currentPoint);
 
       step++;
+
+      if (verbose) { console.log("-----"); }
     }
 
     // check if all the given points are inside the computed polygon
@@ -149,6 +208,7 @@ var concaveHull = function() {
     let allInside = true;
     let i = dataset.length-1;
     while (allInside === true && i >= 0) {
+      if (verbose) { console.log("PointInPolygonQ dataset: ", dataset); }
       allInside = PointInPolygonQ(dataset[i], hull);
       i--;
     }
@@ -266,18 +326,29 @@ var concaveHull = function() {
    * @param Float The angle of the previous line segment in the path
    * @return Array A sorted points array
    */
-  function SortByAngle(points, point, prev_angle){
+  function SortByAngle(points, point, prev_angle, PointsListDebug){
 
     let sorted_points = [];
+
+    // prev_angle = prev_angle + Math.PI
 
     // Calculate the angle between each point in "points" and the target point
     // and insert the point index and angle into a "candidates" array for sorting
     let candidates = [];
     for (let p = 0; p < points.length; p++) {
       let obj = {
+        "number": getIndex(PointsListDebug, points[p]),
         "id" : p,
         "point" : points[p],
-        "angle" : prev_angle - Angle(points[p], point)
+        // "angle" : Angle(points[p], point) - prev_angle,
+        // "raw_angle" : ((Math.PI - Angle(points[p], point)) * (180/Math.PI)).toFixed(2),
+        "raw_angle" : ((
+          Angle(points[p], point)
+          ) * (180/Math.PI)).toFixed(2),
+        "angle" : prev_angle - Angle(points[p], point),
+        // "degrees" : ((
+          // (prev_angle - Math.PI) + Angle(points[p], point)
+          // ) * (180/Math.PI)).toFixed(2)
       };
 
       if (obj.angle < 0) {
@@ -289,13 +360,25 @@ var concaveHull = function() {
       candidates.push(obj);
     }
 
+    if (verbose) {
+      console.log("Previous Angle: ", (prev_angle * (180/Math.PI)).toFixed(2));
+      console.log("Sort by Angle Unsorted Points: ", candidates);
+    }
+
     // Sort points by angle in descending order
     // https://flaviocopes.com/how-to-sort-array-of-objects-by-property-javascript/
     candidates.sort((a, b) => (a.angle > b.angle) ? -1 : 1);
 
+    if (verbose) { console.log("Sorted Candidates: ", candidates); }
+
     // Extract the points
     for (let i = 0; i < candidates.length; i++) {
       sorted_points.push(candidates[i].point);
+    }
+
+    if (verbose) {
+      console.log("Sorted Points: ", sorted_points);
+      console.log("Sorted By Angle: " + candidates);
     }
 
     return sorted_points;
@@ -369,6 +452,21 @@ var concaveHull = function() {
   // These are not defined as part of the Moreira and Santos Algorithm,
   // but are required to support it.
   // ---
+
+  /**
+   * Determine the index position of the point in the array of points.
+   * This is used for debugging purposes only.
+   * @param Array An array of points
+   * @param Array A point array
+   * @return Integer The index position of the point, if found
+   */
+  function getIndex(points, point) {
+    for (let i = 0; i < points.length; i++) {
+      if (pointEquals(points[i], point)) {
+        return i;
+      }
+    }
+  }
 
   /**
    * Extract a column from a 2D array
@@ -502,8 +600,8 @@ var concaveHull = function() {
     for (var i = 0, j = len - 1; i < len; j = i++) {
         var xi = vs[i+start][0], yi = vs[i+start][1];
         var xj = vs[j+start][0], yj = vs[j+start][1];
-        var intersect = ((yi > y) !== (yj > y))
-            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        var intersect = ((yi > y) !== (yj > y)) &&
+            (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
         if (intersect) inside = !inside;
     }
     return inside;
@@ -515,9 +613,6 @@ var concaveHull = function() {
   return {
     calculate: calculate
   };
-}();
+};
 
-// NodeJS CLI Support
-if (typeof exports === "object") {
-  module.exports = { concaveHull };
-}
+export default concaveHull;

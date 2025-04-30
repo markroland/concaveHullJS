@@ -1,12 +1,19 @@
 {
   "name": "@markroland/concave-hull",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Calculate a Concave Hull from a set of points in 2D space",
-  "main": "index.js",
+  "main": "./dist/concaveHull.cjs.js",
+  "module": "./dist/concaveHull.esm.js",
+  "exports": {
+    "require": "./dist/concaveHull.cjs.js",
+    "import": "./dist/concaveHull.esm.js"
+  },
   "bin": {
-    "concave-hull": "./index.js"
+    "concave-hull": "./src/index.js"
   },
   "scripts": {
+    "build": "rollup -c",
+    "prepare": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,15 +24,25 @@
     "Concave",
     "Hull"
   ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "author": "Mark Roland",
-  "license": "SEE LICENSE IN README.md",
+  "license": "CC BY-SA 4.0",
   "bugs": {
     "url": "https://github.com/markroland/concaveHullJS/issues"
   },
   "homepage": "https://github.com/markroland/concaveHullJS#readme",
   "devDependencies": {
+    "@babel/preset-env": "^7.27.1",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
     "csv-parse": "^4.16.0",
     "csv-stringify": "^5.6.2",
+    "rollup": "^4.40.1",
     "yargs": "^17.1.0"
   },
   "engines": {

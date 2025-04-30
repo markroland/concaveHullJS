@@ -68,60 +68,12 @@ Output with a "k" value of 3:
 ]
 ```
 
-## Browser Usage
-
-Include the script in the HTML:
-
-```
-<script src="concaveHull.min.js"></script>
-```
-
-Call the `calculate` function on a set of points:
-
-```
-// Create random points
-let points = new Array();
-for (let i = 0; i < 60; i++) {
-  points.push([Math.random(), Math.random()])
-}
-
-// Define your k value
-const k = 3;
-
-// Call the calculate() function
-let hull = concaveHull.calculate(points, k);
-```
-
-## Command Line Usage
-
-NOTE: This is my first NPM package so I'm not sure if all of this is correct!
-
-```
-npm install @markroland/concave-hull
-```
-
-```
-node index.js [input filepath] 
-```
-
-Run as `concave-hull`. Running `chmod +x` and `npm link` may be required for this.
-
-```
-concave-hull [input filepath] 
-```
-
-Optional: Specify an output filepath
-
-```
-concave-hull [input filepath] [output filepath] 
-```
-
 ## Node Project Usage
 
 ```
-const ch = require('./src/concaveHull.js')
+const concaveHull = require('@markroland/concave-hull')
 
-let points = [
+const points = [
   [-0.2, -0.8],
   [ 0.1, -0.8],
   [ 0.5, -0.7],
@@ -138,9 +90,11 @@ let points = [
   [ 0.5, 0.55],
   [-0.1, 0.7],
   [ 0.2, 0.8]
-];
+]
 
-let calculated_hull = ch.concaveHull.calculate(points, 3)
+const verbose = false
+const hullModule = concaveHull(verbose)
+const calculated_hull = hullModule.calculate(points, 3)
 
 console.log(calculated_hull)
 ```
@@ -148,3 +102,26 @@ console.log(calculated_hull)
 ## License
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+
+## Changelog
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.1.0] - 2025-04-30
+
+### Added
+
+- Added this changelog section
+
+### Changed
+
+- Removed immediately invoked function expression (IIFE). The exported `concaveHull` function
+must now be called first to be initialized.
+- Converted source code to ESM
+- Added Rollup to build for ESM and CJS
+- Combined concaveHull.max.js and concaveHull.js into one file. Call `concaveHull(true)` to enable
+the `verbose` console logs of concaveHull.max.js.
+- Restructured code.
+  - Moved compiled code to a `dist` folder.
+  - Moved example code to an `example` folder.
