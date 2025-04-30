@@ -1,7 +1,8 @@
 {
   "name": "@markroland/concave-hull",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Calculate a Concave Hull from a set of points in 2D space",
+  "type": "module",
   "main": "./dist/concaveHull.cjs.js",
   "module": "./dist/concaveHull.esm.js",
   "exports": {
@@ -9,7 +10,7 @@
     "import": "./dist/concaveHull.esm.js"
   },
   "bin": {
-    "concave-hull": "./src/index.js"
+    "concave-hull": "./src/cli.js"
   },
   "scripts": {
     "build": "rollup -c",
@@ -40,13 +41,19 @@
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-terser": "^0.4.4",
-    "csv-parse": "^4.16.0",
-    "csv-stringify": "^5.6.2",
-    "rollup": "^4.40.1",
-    "yargs": "^17.1.0"
+    "rollup": "^4.40.1"
   },
   "engines": {
     "node": ">=22.x",
     "npm": ">=10.x"
+  },
+  "browserslist": [
+    ">0.25%",
+    "not dead"
+  ],
+  "dependencies": {
+    "csv-parse": "^5.6.0",
+    "csv-stringify": "^6.5.2",
+    "yargs": "^17.7.2"
   }
 }

@@ -38,5 +38,23 @@ export default [
       }),
       terser()
     ]
+  },
+  // Browser (IIFE) Build
+  {
+    input: 'src/concaveHull.js',
+    output: {
+      file: 'dist/concaveHull.browser.js',
+      format: 'iife',
+      name: 'concaveHull'
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      babel({
+        babelHelpers: 'bundled',
+        exclude: 'node_modules/**'
+      }),
+      terser()
+    ]
   }
 ];
